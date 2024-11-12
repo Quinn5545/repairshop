@@ -4,9 +4,9 @@ import { withSentryConfig } from "@sentry/nextjs";
 
 const nextConfig = {
   // Your existing Next.js configuration
-  experimental: {
-    instrumentationHook: true,
-  },
+  // experimental: {
+  //   instrumentationHook: true,
+  // },
 };
 
 // Make sure adding Sentry options is the last code to run before exporting
