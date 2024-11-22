@@ -9,7 +9,7 @@ export const insertCustomerSchema = createInsertSchema(customers, {
   state: (schema) =>
     schema.state.length(2, "State must be exactly 2 characters"),
   email: (schema) => schema.email.email("Invalid email address").min(1),
-  zip: (schema) => schema.zip.regex(/^\d{6}(-\d{4})?$/, "Invalid zip code"),
+  zip: (schema) => schema.zip.regex(/^\d{5}(-\d{4})?$/, "Invalid zip code"),
   phone: (schema) =>
     schema.phone.regex(
       /^\d{3}-\d{3}-\d{4}?$/,
