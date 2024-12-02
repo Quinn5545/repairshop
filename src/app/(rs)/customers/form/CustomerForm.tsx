@@ -14,11 +14,23 @@ import { TextAreaWithLabel } from "@/components/inputs/TextAreaWithLabel";
 import { SelectWithLabel } from "@/components/inputs/SelectWithLabel";
 import { StatesArray } from "@/constants/StatesArray";
 
+import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
+import { CheckboxWithLabel } from "@/components/inputs/CheckboxWithLabel";
+
 type Props = {
   customer?: selectCustomerSchemaType;
 };
 
 export default function CustomerForm({ customer }: Props) {
+  const { getPermission, isLoading } = useKindeBrowserClient();
+  const isManager = !isLoading && getPermission("manager")?.isGranted;
+
+  // other possible way of doing it
+  // const permObj = getPermissions();
+  // const isAuthorized =
+  //   !isLoading &&
+  //   permObj.permissions.some((perm) => perm === "manager" || perm === "admin");
+
   const defaultValues: insertCustomerSchemaType = {
     id: customer?.id ?? 0,
     firstName: customer?.firstName ?? "",
@@ -47,7 +59,8 @@ export default function CustomerForm({ customer }: Props) {
     <div className="flex flex-col gap-1 sm:px-8">
       <div>
         <h2 className="text-2xl font-bold">
-          {customer?.id ? "Edit" : "New"} Customer Form
+          {customer?.id ? "Edit" : "New"} Customer{" "}
+          {customer?.id ? `#${customer.id}` : "Form"}
         </h2>
       </div>
 
@@ -107,6 +120,16 @@ export default function CustomerForm({ customer }: Props) {
               nameInSchema="notes"
               className="h-40"
             />
+
+            {isLoading ? (
+              <p>Loading...</p>
+            ) : isManager && customer?.id ? (
+              <CheckboxWithLabel<insertCustomerSchemaType>
+                fieldTitle="Active"
+                nameInSchema="active"
+                message="Yes"
+              />
+            ) : null}
 
             <div className="flex gap-2">
               <Button

@@ -17,12 +17,14 @@ type Props<S> = {
   fieldTitle: string;
   nameInSchema: keyof S & string;
   message: string;
+  disabled?: boolean;
 } & InputHTMLAttributes<HTMLInputElement>;
 
 export function CheckboxWithLabel<S>({
   fieldTitle,
   nameInSchema,
   message,
+  disabled = false,
   ...props
 }: Props<S>) {
   const form = useFormContext();
@@ -44,6 +46,7 @@ export function CheckboxWithLabel<S>({
                 {...field}
                 checked={field.value}
                 onCheckedChange={field.onChange}
+                disabled={disabled}
               />
             </FormControl>
             {message}
